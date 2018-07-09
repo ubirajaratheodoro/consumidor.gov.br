@@ -43,9 +43,9 @@
 				y.fontSize = 12;
 				
 				// configura o eixo Z do gráfico principal
-				var z = chart.addMeasureAxis("z", "Ocorrências");
+				var z = chart.addMeasureAxis("z", "Ocorrencias");
 				z.overrideMin = 0;
-				z.overrideMax = 500000;
+				z.overrideMax = 40000000;
 			
 				// configura a série de dados do gráfico principal
 				var s_bubble = chart.addSeries("GrupoProblema", 
@@ -79,7 +79,7 @@
 				   .style("font-family", "courier new")
 				   .style("font-weight", "bold")
 				   .style("font-size", 18)
-				   .text("Consumidor.Gov.br - www.consumidor.gov.br");
+				   .text("Consumidor.Gov.Br");
 
 				// adiciona segunda linha de cabeçalho ao gráfico
 				svg.append("text")
@@ -90,15 +90,15 @@
 				   .style("font-family", "courier new")
 				   .style("font-weight", "bold")
 				   .style("font-size", 18)
-				   .text("Reclamações por Empresa e Grupo de Problema");
+				   .text("Reclamações de Consumidores registradas");
 				   
 				// adiciona texto explicativo entre as linhas 1 e 2 do cabeçalho
 				svg.selectAll("explanatory_text")
-					.data(["Prosper é a primeira plataforma do mercado de empréstimos da América, que permite que as pessoas invistam umas nas outras, de uma forma que seja financeiramente",
-					"e socialmente gratificante. Uma questão importante para analisarmos, portanto, é se de alguma forma os empréstimos seriam socialmente distribuídos. Dentro deste contexto,",
-					"será que mutuários com uma alta taxa de comprometimento da renda teriam acesso preferencialmente às menores taxas de juros? Se existe uma relação, qual seria?",
-					"O que podemos perceber neste aspecto, é que a taxa de comprometimento da renda dos mutuários não deram à estes qualquer vantagem ou desvantagem na determinação",
-					"da taxa de juros dos empréstimos intermediados."
+					.data(["linha 01",
+					"linha 02",
+					"linha 03",
+					"linha 04",
+					"linha 05"
 					])
 					.enter()
 					.append("text")
@@ -180,17 +180,17 @@
 					  .style("font-size", 11)
 					  .style("fill", "fill");
 				  
-					// filtra os dados totalizando por FBorrowerAPR e FDebtToIncomeRatio
+					// filtra os dados totalizando por Empresa e GrupoProblema
 					var ViewData1 = data;
 					ViewData1 = dimple.filterData(ViewData1, 
-								"FBorrowerAPR", e.yValue);
+								"Empresa", e.yValue);
 					ViewData1 = dimple.filterData(ViewData1, 
-								"FDebtToIncomeRatio", e.xValue);
+								"GrupoProblema", e.xValue);
 
-					// filtra os dados totalizando apenas por FDebtToIncomeRatio
+					// filtra os dados totalizando apenas por GrupoProblema
 					var ViewData2 = data;
 					ViewData2 = dimple.filterData(ViewData2, 
-								"FDebtToIncomeRatio", e.xValue);
+								"GrupoProblema", e.xValue);
 					
 					// cria e delimita um gráfico para cada subconjunto de dados criado
 					tipchart1 = new dimple.chart(svg, ViewData1);
@@ -212,9 +212,9 @@
 					
 					// configura o Eixo-Y do gráfico auxiliar
 					var y_tip1 = tipchart1.addMeasureAxis("y", 
-								"LoanOriginalAmount");
+								"Ocorrencias");
 					var y_tip2 = tipchart2.addMeasureAxis("y", 
-								"LoanOriginalAmount");
+								"Ocorrencias");
 					y_tip1.title = "";
 					y_tip2.title = "";
 					y_tip1.ticks = 4;
@@ -225,7 +225,7 @@
 					y_tip2.overrideMax = 20000000;
 			
 					// cria uma legenda e uma série para exibir o primeiro gráfico auxiliar
-					// dados agrupados por FBorrowerAPR e FDebtToIncomeRatio
+					// dados agrupados por Empresa e GrupoProblema
 					var popSeries1leg = e.yValue.toString() + 
 										"% de juros";
 					var popSeries1 = tipchart1.addSeries(popSeries1leg, 
@@ -233,7 +233,7 @@
 					popSeries1.barGap = 0.8;
 
 					// cria uma legenda e uma série para exibir o segundo gráfico auxiliar
-					// dados agrupados apenas por FDebtToIncomeRatio
+					// dados agrupados apenas por GrupoProblema
 					var popSeries2 = tipchart2.addSeries("todas as taxas", 
 									dimple.plot.line);
 					popSeries2.barGap = 0.8;
