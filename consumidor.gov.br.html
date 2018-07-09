@@ -12,7 +12,7 @@
 		<script type="text/javascript">
 			// delimita o espaço e o tamanho do gráfico à ser exibido
 			var svg = dimple.newSvg("#chartContainer",960,500);
-			d3.csv("res-anual_segmento_empresa_grupoproblema.csv",function(data)
+			d3.csv("res-anual_operadorastele_empresa_grupoproblema.csv",function(data)
 			{
 				// declara as variáveis para dimensionar 2 gráficos
 				// (principal + lateral)
@@ -45,7 +45,7 @@
 				// configura o eixo Z do gráfico principal
 				var z = chart.addMeasureAxis("z", "Ocorrências");
 				z.overrideMin = 0;
-				z.overrideMax = 125000;
+				z.overrideMax = 500000;
 			
 				// configura a série de dados do gráfico principal
 				var s_bubble = chart.addSeries("GrupoProblema", 
@@ -79,7 +79,7 @@
 				   .style("font-family", "courier new")
 				   .style("font-weight", "bold")
 				   .style("font-size", 18)
-				   .text("Prosper Marketplace Inc. - wwww.prosper.com");
+				   .text("Consumidor.Gov.br - www.consumidor.gov.br");
 
 				// adiciona segunda linha de cabeçalho ao gráfico
 				svg.append("text")
@@ -90,7 +90,7 @@
 				   .style("font-family", "courier new")
 				   .style("font-weight", "bold")
 				   .style("font-size", 18)
-				   .text("Volume de Emprestimos por Taxa de Juros e Comprometimento da Renda");
+				   .text("Reclamações por Empresa e Grupo de Problema");
 				   
 				// adiciona texto explicativo entre as linhas 1 e 2 do cabeçalho
 				svg.selectAll("explanatory_text")
