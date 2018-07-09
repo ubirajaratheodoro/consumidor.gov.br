@@ -45,7 +45,7 @@
 				// configura o eixo Z do gráfico principal
 				var z = chart.addMeasureAxis("z", "Ocorrencias");
 				z.overrideMin = 0;
-				z.overrideMax = 40000000;
+				z.overrideMax = 400000;
 			
 				// configura a série de dados do gráfico principal
 				var s_bubble = chart.addSeries("GrupoProblema", 
@@ -78,7 +78,7 @@
 				   .style("text-anchor", "middle")
 				   .style("font-family", "courier new")
 				   .style("font-weight", "bold")
-				   .style("font-size", 18)
+				   .style("font-size", 16)
 				   .text("Consumidor.Gov.Br");
 
 				// adiciona segunda linha de cabeçalho ao gráfico
@@ -89,7 +89,7 @@
 				   .style("text-anchor", "middle")
 				   .style("font-family", "courier new")
 				   .style("font-weight", "bold")
-				   .style("font-size", 18)
+				   .style("font-size", 14)
 				   .text("Reclamações de Consumidores registradas");
 				   
 				// adiciona texto explicativo entre as linhas 1 e 2 do cabeçalho
@@ -202,9 +202,9 @@
 
 					// configura o Eixo-X do gráfico auxiliar
 					var x_tip1 = tipchart1.addTimeAxis("x", 
-								"FLoanOriginationYear", "%Y", "%Y");
+								"Data", "%Y", "%Y");
 					var x_tip2 = tipchart2.addTimeAxis("x", 
-								"FLoanOriginationYear", "%Y", "%Y");
+								"Data", "%Y", "%Y");
 					x_tip1.title = "";
 					x_tip2.title = "";
 					x_tip1.showGridlines = true;
@@ -221,8 +221,8 @@
 					y_tip2.ticks = 4;
 					y_tip1.overrideMin = 0;
 					y_tip2.overrideMin = 0;
-					y_tip1.overrideMax = 20000000;
-					y_tip2.overrideMax = 20000000;
+					y_tip1.overrideMax = 200000;
+					y_tip2.overrideMax = 200000;
 			
 					// cria uma legenda e uma série para exibir o primeiro gráfico auxiliar
 					// dados agrupados por Empresa e GrupoProblema
