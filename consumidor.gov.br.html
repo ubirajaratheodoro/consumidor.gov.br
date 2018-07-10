@@ -18,7 +18,7 @@
 				// (principal + lateral)
 				var padding = 55,
 					width = 960,
-					height = 500,
+					height = 960,
 					rightBar = 0,
 					legendheight = height/4;
 
@@ -45,7 +45,7 @@
 				// configura o eixo Z do gráfico principal
 				var z = chart.addMeasureAxis("z", "Ocorrencias");
 				z.overrideMin = 0;
-				z.overrideMax = 400000;
+				z.overrideMax = 100000;
 			
 				// configura a série de dados do gráfico principal
 				var s_bubble = chart.addSeries("GrupoProblema", 
