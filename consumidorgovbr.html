@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+	<title>Consumidor Gov Br</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dimple/2.3.0/dimple.latest.min.js"></script>
+</head>
+
+<body>
+	<div id="chartContainer">
+		<script type="text/javascript">
+			// delimita o espaço e o tamanho do gráfico à ser exibido
+			var svg = dimple.newSvg("#chartContainer",960,500);
+			d3.csv("operadorastele.csv",function(data)
+			{
+				// declara as variáveis para dimensionar 2 gráficos
+				// (principal + lateral)
+				var padding = 55,
+					width = 960,
+					height = 500,
+					rightBar = 0,
+					legendheight = height/4;
+
+				// cria e delimita chart principal
+				var chart = new dimple.chart(svg,data);
+				chart.setBounds(padding, 2*padding + 10,
+								width - rightBar - 2 * padding, 
+								height- 3* padding - 10);
+				
+				// declara os gráficos a serem exibidos com o evento mouseover
+				var tipchart1 = null;
+				var tipchart2 = null;
+				
+				// configura o eixo X do gráfico principal
+				var x = chart.addCategoryAxis("x", "GrupoProblema");
+				x.title = "GrupoProblema";
+				x.fontSize = 12;
+
+				// configura o eixo Y do gráfico principal
+				var y = chart.addCategoryAxis("y", "Empresa");
+				y.title = "Empresa";
+				y.fontSize = 12;
+				
+				// configura o eixo Z do gráfico principal
+				var z = chart.addMeasureAxis("z", "Ocorrencias");
+				z.overrideMin = 0;
+				z.overrideMax = 20000000;
+			
+				// configura a série de dados do gráfico principal
+				var s_bubble = chart.addSeries("GrupoProblema", 
+												dimple.plot.bubble);
+				s_bubble.radius = 40;
+				s_bubble.addOrderRule("GrupoProblema");
+
+				// adicona o evento mouseover à série de dados para abrir gráfico auxiliar
+				s_bubble.addEventHandler("mouseover", onHover);
+				
+				// adicona o evento mouseleave à série de dados para remover gráfico auxiliar
+				s_bubble.addEventHandler("mouseleave", onLeave);
+				
+				// altera a configuração de cores padrão do gráfico principal
+				chart.defaultColors = [
+					new dimple.color("silver") // You can use #RGB here
+				];
+
+				//------------------------
+				// exibe gráfico principal
+				//------------------------
+				chart.draw();
+				
+				// adiciona primeira linha de cabeçalho ao gráfico
+				svg.append("text")
+				   .attr("x", chart._xPixels() + 
+						chart._widthPixels() / 2)
+				   .attr("y", 15)
+				   //.attr("y", chart._yPixels() - 40)
+				   .style("text-anchor", "middle")
+				   .style("font-family", "courier new")
+				   .style("font-weight", "bold")
+				   .style("font-size", 16)
+				   .text("Consumidor.Gov.Br");
+
+				// adiciona segunda linha de cabeçalho ao gráfico
+				svg.append("text")
+				   .attr("x", chart._xPixels() + 
+						chart._widthPixels() / 2)
+				   .attr("y", chart._yPixels() - 3)
+				   .style("text-anchor", "middle")
+				   .style("font-family", "courier new")
+				   .style("font-weight", "bold")
+				   .style("font-size", 14)
+				   .text("Reclamações de Consumidores registradas");
+				   
+				// adiciona texto explicativo entre as linhas 1 e 2 do cabeçalho
+				svg.selectAll("explanatory_text")
+					.data(["linha 01",
+					"linha 02",
+					"linha 03",
+					"linha 04",
+					"linha 05"
+					])
+					.enter()
+					.append("text")
+					  .attr("x", 20)
+					  .attr("y", function(d, i) { return 40 + i *14; } )
+					  .style("font-size", "11px")
+					  .style("color", "Black")
+					  .style("font-family", "sans-serif")
+					  .text(function (d) { return d; });
+   
+
+		
+		</script>
+	</div>
+	
+</body>
+</html>
