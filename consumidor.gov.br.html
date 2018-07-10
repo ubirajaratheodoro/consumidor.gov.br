@@ -11,14 +11,14 @@
 	<div id="chartContainer">
 		<script type="text/javascript">
 			// delimita o espaço e o tamanho do gráfico à ser exibido
-			var svg = dimple.newSvg("#chartContainer",960,960);
+			var svg = dimple.newSvg("#chartContainer",960,500);
 			d3.csv("res-anual_operadorastele.csv",function(data)
 			{
 				// declara as variáveis para dimensionar 2 gráficos
 				// (principal + lateral)
 				var padding = 55,
 					width = 960,
-					height = 960,
+					height = 500,
 					rightBar = 0,
 					legendheight = height/4;
 
