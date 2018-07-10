@@ -12,7 +12,7 @@
 		<script type="text/javascript">
 			// delimita o espaço e o tamanho do gráfico à ser exibido
 			var svg = dimple.newSvg("#chartContainer",960,500);
-			d3.csv("ds_anual_operadorastelecomunicacoes.csv",function(data)
+			d3.csv("operadorastele.csv",function(data)
 			{
 				// declara as variáveis para dimensionar 2 gráficos
 				// (principal + lateral)
@@ -34,7 +34,7 @@
 				
 				// configura o eixo X do gráfico principal
 				var x = chart.addCategoryAxis("x", "GrupoProblema");
-				x.title = "Grupo de Problema";
+				x.title = "GrupoProblema";
 				x.fontSize = 12;
 
 				// configura o eixo Y do gráfico principal
@@ -42,11 +42,10 @@
 				y.title = "Empresa";
 				y.fontSize = 12;
 				
-				/*
 				// configura o eixo Z do gráfico principal
 				var z = chart.addMeasureAxis("z", "Ocorrencias");
 				z.overrideMin = 0;
-				z.overrideMax = 100000;
+				z.overrideMax = 20000000;
 			
 				// configura a série de dados do gráfico principal
 				var s_bubble = chart.addSeries("GrupoProblema", 
@@ -64,7 +63,7 @@
 				chart.defaultColors = [
 					new dimple.color("silver") // You can use #RGB here
 				];
-				*/
+
 				//------------------------
 				// exibe gráfico principal
 				//------------------------
@@ -110,171 +109,7 @@
 					  .style("font-family", "sans-serif")
 					  .text(function (d) { return d; });
    
-				//----------------------------------------------------------
-				// função do evento mouseover para exibir o gráfico auxiliar
-				//----------------------------------------------------------
-				function onHover(e) {
-					// grava as propriedades da forma selecionada
-					var cx = parseFloat(e.selectedShape.attr("cx")),
-						cy = parseFloat(e.selectedShape.attr("cy")),
-						r = parseFloat(e.selectedShape.attr("r")),
-						fill = e.selectedShape.attr("fill"),
-						stroke = e.selectedShape.attr("stroke");
-						
-					// declara as variáveis para dimensionar o gráfico auxiliar
-					var chart_width = 960,
-						chart_height = 500,
-						padding = 55,
-						rightBar = 0,
-						legendheight = chart_height/4;
-					
-					// determina o tamanho e posição do gráfico auxiliar
-					var width = 320,
-						height = 180,
-						x = (cx + r + width + 10 < chart_width -  rightBar?
-							  cx + r + 10 :
-							  cx - r - width - 20);
-						y = (cy - height / 2 < 0 ?
-							  15 :
-							  cy - height / 2);
-							
-					// preenche a cor de fundo do gráfico auxiliar
-					var popupFillColor = d3.rgb(
-								d3.rgb(fill).r + 0.9 * (255 - d3.rgb(fill).r),
-								d3.rgb(fill).g + 0.9 * (255 - d3.rgb(fill).g),
-								d3.rgb(fill).b + 0.9 * (255 - d3.rgb(fill).b)
-							);
-							
-					// cria um grupo para armazenar os objetos ref. gráfico auxiliar
-					popup = svg.append("g");
-					
-					// adiciona um retângulo para comportar o gráfico auxiliar
-					popup
-					  .append("rect")
-					  .attr("x", x + 5)
-					  .attr("y", y - 5)
-					  .attr("width", width)
-					  .attr("height", height)
-					  .attr("rx", 5)
-					  .attr("ry", 5)
-					  .style("fill", popupFillColor)
-					  .style("stroke", stroke)
-					  .style("stroke-width", 2);
-					
-					// restaura o valor total em empréstimos da posição selecionada
-					var value = e.zValue;
-					var loanamount = "$ " + 
-						value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-					
-					// exibe o cabeçalho do gráfico auxiliar
-					popup
-					  .append("text")
-					  .attr("x", x + 10)
-					  .attr("y", y + 10)
-					  .text("Total: " + loanamount + 
-									" (Compr.Renda: " + 
-									e.xValue + "%; " + 
-									"Tx.Juros: " + 
-									e.yValue + 
-									"%)")
-					  .style("font-family", "sans-serif")
-					  .style("font-size", 11)
-					  .style("fill", "fill");
-				  
-					// filtra os dados totalizando por Empresa e GrupoProblema
-					var ViewData1 = data;
-					ViewData1 = dimple.filterData(ViewData1, 
-								"Empresa", e.yValue);
-					ViewData1 = dimple.filterData(ViewData1, 
-								"GrupoProblema", e.xValue);
 
-					// filtra os dados totalizando apenas por GrupoProblema
-					var ViewData2 = data;
-					ViewData2 = dimple.filterData(ViewData2, 
-								"GrupoProblema", e.xValue);
-					
-					// cria e delimita um gráfico para cada subconjunto de dados criado
-					tipchart1 = new dimple.chart(svg, ViewData1);
-					tipchart2 = new dimple.chart(svg, ViewData2);
-					tipchart1.setBounds(x + 40, y + 30, 
-										width - 60, height - 60);
-					tipchart2.setBounds(x + 40, y + 30, 
-										width - 60, height - 60);
-
-					// configura o Eixo-X do gráfico auxiliar
-					var x_tip1 = tipchart1.addTimeAxis("x", 
-								"Data", "%Y", "%Y");
-					var x_tip2 = tipchart2.addTimeAxis("x", 
-								"Data", "%Y", "%Y");
-					x_tip1.title = "";
-					x_tip2.title = "";
-					x_tip1.showGridlines = true;
-					x_tip2.showGridlines = true;
-					
-					// configura o Eixo-Y do gráfico auxiliar
-					var y_tip1 = tipchart1.addMeasureAxis("y", 
-								"Ocorrencias");
-					var y_tip2 = tipchart2.addMeasureAxis("y", 
-								"Ocorrencias");
-					y_tip1.title = "";
-					y_tip2.title = "";
-					y_tip1.ticks = 4;
-					y_tip2.ticks = 4;
-					y_tip1.overrideMin = 0;
-					y_tip2.overrideMin = 0;
-					y_tip1.overrideMax = 200000;
-					y_tip2.overrideMax = 200000;
-			
-					// cria uma legenda e uma série para exibir o primeiro gráfico auxiliar
-					// dados agrupados por Empresa e GrupoProblema
-					var popSeries1leg = e.yValue.toString() + 
-										"% de juros";
-					var popSeries1 = tipchart1.addSeries(popSeries1leg, 
-									dimple.plot.line);
-					popSeries1.barGap = 0.8;
-
-					// cria uma legenda e uma série para exibir o segundo gráfico auxiliar
-					// dados agrupados apenas por GrupoProblema
-					var popSeries2 = tipchart2.addSeries("todas as taxas", 
-									dimple.plot.line);
-					popSeries2.barGap = 0.8;
-					
-					// configura as cores do primeiro gráfico auxiliar conforme forma selecionada
-					tipchart1.assignColor(popSeries1leg, stroke, stroke);
-
-					// configura as cores do segundo gráfico auxiliar
-					tipchart2.defaultColors = [
-					new dimple.color("black") // You can use #RGB here
-					];
-					
-					// adiciona legenda para cada gráfico auxiliar
-					tipchart1.addLegend(x + 60, y + 35, 
-										width - 80, height - 80, "left");
-					tipchart2.addLegend(x + 180, y + 35, 
-										width - 80, height - 80, "left");
-					
-					// exibe os gráficos auxiliares
-					tipchart1.draw();
-					tipchart2.draw();
-					
-				};
-			  
-			  // função para remover o gráfico auxiliar no evento mouseleave
-				function onLeave(e) {
-					// remove os gráficos auxiliares se existirem
-					if (tipchart1 !== null) {
-					  tipchart1._group.remove();
-					}  
-					if (tipchart2 !== null) {
-					  tipchart2._group.remove();
-					}  
-					// remove demais objetos do grupo ref. gráfico auxiliar
-					if (popup !== null) {
-					  popup.remove();
-					}
-				};
-
-			 });
 		
 		</script>
 	</div>
